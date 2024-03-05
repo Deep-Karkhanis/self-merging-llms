@@ -1,0 +1,114 @@
+FROM nvcr.io/nvidia/pytorch:23.10-py3
+
+RUN chown root:root /usr/lib
+
+RUN apt update -y && apt install -y build-essential curl openssh-server openssh-client pdsh
+RUN mkdir -p /var/run/sshd
+
+RUN cat /etc/ssh/ssh_config | grep -v StrictHostKeyChecking > /etc/ssh/ssh_config.new && \
+    echo "    StrictHostKeyChecking no" >> /etc/ssh/ssh_config.new && \
+    mv /etc/ssh/ssh_config.new /etc/ssh/ssh_config
+
+ENV SSH_PORT=4242
+RUN cat /etc/ssh/ssh_config | grep -v Port > /etc/ssh/ssh_config.new && \
+    echo "    Port ${SSH_PORT}" >> /etc/ssh/ssh_config.new && \
+    mv /etc/ssh/ssh_config.new /etc/ssh/ssh_config
+
+RUN cat /etc/ssh/sshd_config > /tmp/sshd_config && \
+    sed "0,/^#Port 22/s//Port ${SSH_PORT}/" /tmp/sshd_config > /etc/ssh/sshd_config
+
+RUN mkdir -p /root/.ssh && chmod -R go= /root/.ssh
+
+COPY ./docker_key.pub /root/.ssh/authorized_keys
+COPY ./docker_key /root/.ssh/id_rsa
+
+RUN chmod 600 /root/.ssh/id_rsa
+
+RUN pip install --upgrade pip wheel
+
+RUN pip install \
+        accelerate \
+        aioprometheus \
+        deepspeed \
+        fastapi \
+        fschat[model_worker,webui] \
+        peft \
+        protobuf==3.20.3 \
+        ray \
+        sentencepiece \
+        transformers \
+        trl \
+        uvicorn
+
+RUN pip install --no-deps stanford-stk
+
+RUN pip install \
+        colored \
+        cuda-python==12.2.0 \
+        diffusers \
+        evaluate \
+        janus \
+        lark \
+        onnx \
+        onnxruntime==1.12.1 \
+        optimum \
+        Pillow \
+        psutil \
+        pycuda \
+        wheel
+
+RUN mkdir /packages/
+
+ADD https://static.abacus.ai/pypi/abacusai/gh200-llm/flash_attn-2.3.6-cp310-cp310-linux_aarch64.whl /packages
+
+ADD https://static.abacus.ai/pypi/abacusai/gh200-llm/vllm-0.2.5%2Bcu122-cp310-cp310-linux_aarch64.whl /packages
+
+ADD https://github.com/acollins3/triton/releases/download/triton-2.1.0-arm64/triton-2.1.0-cp310-cp310-linux_aarch64.whl /packages
+
+ADD https://static.abacus.ai/pypi/abacusai/gh200-llm/xformers-0.0.24%2B40d3967.d20231210-cp310-cp310-linux_aarch64.whl /packages
+
+ADD https://static.abacus.ai/pypi/abacusai/gh200-llm/megablocks-0.5.0-cp310-cp310-linux_aarch64.whl /packages
+
+ADD https://static.abacus.ai/pypi/abacusai/gh200-llm/tensorrt-9.2.0.post12.dev5-cp310-none-linux_aarch64.whl /packages
+
+ADD https://static.abacus.ai/pypi/abacusai/gh200-llm/tensorrt_dispatch-9.2.0.post12.dev5-cp310-none-linux_aarch64.whl /packages
+
+ADD https://static.abacus.ai/pypi/abacusai/gh200-llm/tensorrt_lean-9.2.0.post12.dev5-cp310-none-linux_aarch64.whl /packages
+
+ADD https://static.abacus.ai/pypi/abacusai/gh200-llm/tensorrtlibs-9.2.0.post12.dev5-cp310-none-linux_aarch64.tar.gz /packages
+
+ADD https://developer.nvidia.com/downloads/compute/machine-learning/tensorrt/secure/9.0.1/tars/polygraphy-0.48.1-py2.py3-none-any.whl /packages
+
+ADD https://static.abacus.ai/pypi/abacusai/gh200-llm/tensorrt_llm-0.7.1-cp310-cp310-linux_aarch64.whl /packages
+
+ADD https://github.com/mpi4py/mpi4py/archive/refs/tags/3.1.5.tar.gz /packages
+
+RUN pip install --no-deps --find-links /packages flash-attn==2.3.6
+
+RUN pip install --no-deps --find-links /packages vllm==0.2.5
+
+RUN pip install --no-deps --find-links /packages triton==2.1.0
+
+RUN pip install --no-deps --find-links /packages xformers==0.0.24
+
+RUN pip install --no-deps --find-links /packages megablocks==0.5.0
+
+RUN pip install --no-deps --find-links /packages tensorrt==9.2.0.post12.dev5
+
+RUN pip install --no-deps --find-links /packages tensorrt_dispatch==9.2.0.post12.dev5
+
+RUN pip install --no-deps --find-links /packages tensorrt_lean==9.2.0.post12.dev5
+
+RUN tar zxf /packages/tensorrtlibs-9.2.0.post12.dev5-cp310-none-linux_aarch64.tar.gz -C /usr/local/
+
+ENV LD_LIBRARY_PATH /usr/local/tensorrt/lib:$LD_LIBRARY_PATH
+
+RUN pip install --no-deps --find-links /packages polygraphy==0.48.1
+
+RUN pip install --no-deps --find-links /packages tensorrt_llm==0.7.1
+
+RUN tar zxf /packages/3.1.5.tar.gz -C /packages && sed -i 's/>= 40\.9\.0/>= 40.9.0, < 69/g' /packages/mpi4py-3.1.5/pyproject.toml && pip install /packages/mpi4py-3.1.5
+
+RUN rm -r /packages
+
+ENTRYPOINT ["/bin/bash"]

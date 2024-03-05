@@ -1,0 +1,13 @@
+tag=${TAG:-latest}
+repo_name=${REPO_NAME:-llm-default}
+repo=us-docker.pkg.dev/abacus-llm/llm-images/${repo_name}
+DOCKER_IMAGE=${repo}:${tag}
+
+
+init_for_docker_start() {
+   if [[ $DOCKER_IMAGE == *us-docker.pkg.dev* ]] ; then
+       gcloud auth configure-docker
+       gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://us-docker.pkg.dev
+   fi
+   docker pull $DOCKER_IMAGE
+}

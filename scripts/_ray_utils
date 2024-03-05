@@ -1,0 +1,40 @@
+LLGH_CLUSTER_MASTER_HOST=cpu-01
+if [[ x$RAY_MASTER_NODE = "x" ]]; then
+    RAY_MASTER_NODE=`hostname -s`
+fi
+if [[ $RAY_MASTER_NODE == *lgh* ]]; then
+    SERVER_NUM=`echo $RAY_MASTER_NODE | sed 's/llgh\([0-9]*\).*$/\1/'`
+    LLGH_CLUSTER_PORT=`expr 7000 + $SERVER_NUM \* 10`
+fi
+
+internal_hostname() {
+    internal_ip=$(hostname -i)
+    grep $internal_ip  /etc/hosts | awk '{print $2}'
+}
+
+
+start_cluster_controller() {
+    if [[ x$(internal_hostname) = x${LLGH_CLUSTER_MASTER_HOST} ]] ; then
+	LD_PRELOAD= ray start --head --port $LLGH_CLUSTER_PORT
+    fi
+}
+
+
+is_ray_initialized() {
+    if [[ -d /sharedfs ]] ; then
+	status=$(ray status --address ${LLGH_CLUSTER_MASTER_HOST}:${LLGH_CLUSTER_PORT} 2>&1 > /dev/null && echo yes)
+        if [[ x$status = "xyes" ]] ; then
+	    echo Ray cluster detected at ${LLGH_CLUSTER_MASTER_HOST}:${LLGH_CLUSTER_PORT}
+	    return 0
+	fi
+    fi
+    return 1
+}
+
+
+maybe_init_ray() {
+    if [[ -d /sharedfs && x$USE_RAY = "xtrue" ]] ; then
+        echo Starting ray
+        LD_PRELOAD= ray start --address ${LLGH_CLUSTER_MASTER_HOST}:${LLGH_CLUSTER_PORT}
+    fi
+}
