@@ -1,8 +1,8 @@
 {
   "results": {
     "gsm8k": {
-      "acc": 0.0,
-      "acc_stderr": 0.0
+      "acc": 0.686125852918878,
+      "acc_stderr": 0.012782681251053198
     }
   },
   "versions": {
