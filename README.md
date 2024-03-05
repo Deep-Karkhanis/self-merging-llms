@@ -8,7 +8,7 @@ Efficient Self-Merging for Large Language Models
   cd lm-evaluation-harness
   git checkout b281b0921b636bc36ad05c0b0b0763bd6dd43463
   ```
-- Clone our repository and run the docker image. Provide a comma separated list of GPU ids to run docker across multiple GPUs
+- Clone our repository and run the docker image. If needed, provide a comma separated list of GPU ids to run docker across multiple GPUs
   ```
   cd ../
   git clone https://github.com/Deep-Karkhanis/self-merging-llms.git
