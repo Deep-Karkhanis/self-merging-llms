@@ -1,5 +1,7 @@
 import optuna
-
+from llm_leaderboard_eval import run_eval_suite
+from argparse import Namespace
+import json
 
 def create_mergekit_yaml(config_file_name, 
                          layer_length, 
@@ -43,16 +45,35 @@ def objective(trial):
         #!mergekit-yaml $config_file_name merge --copy-tokenizer --allow-crimes --out-shard-size 1B --lazy-unpickle
 
         # TODO: evaluate model here, and replace 0.5 with the true eval loss
-        eval_loss = 0.5
+        # call run_eval_suite(args) with the following args:
+        # python ./llm_leaderboard_eval.py  --model-path DeepKarkhanis/NeuralPipe-7B-slerp 
+        #                                   --output-path ./llm_eval_results/DeepKarkhanis-NeuralPipe-7B-slerp 
+        #                                   --eval-harness-path /repos/lm-evaluation-harness --batch-size 32
+        llm_eval_args = Namespace()
+        llm_eval_args.model_path = "DeepKarkhanis/NeuralPipe-7B-slerp" # HF location of the model
+        llm_eval_args.peft_path = None
+        llm_eval_args.tokenizer_path = None # tokenizer at model_path
+        llm_eval_args.output_path = f"./llm_eval_results/DeepKarkhanis-NeuralPipe-7B-slerp/trial-{str(trial.number)}"
+        llm_eval_args.eval_harness_path = "./lm-evaluation-harness"
+        llm_eval_args.device = None
+        llm_eval_args.batch_size = 32
+        llm_eval_args.bench_on_val = True
+        llm_eval_args.force_rerun = True
 
+        eval_log = run_eval_suite(llm_eval_args)
+        # read llm_eval_args.output_path/arc as a json file
+        val_score = json.load(open(f"{llm_eval_args.output_path}/arc", "r"))['results']['arc_challenge']['acc_norm']
+        eval_loss = 1.0 - val_score
+        # eval_loss = 0.5
+    
     except Exception as e:
         # if we fail to create and evaluate the model, then print the error and return the worst possible loss
         print(e)
         return 1.0
 
-    # return loss on the eval set
     return eval_loss
 
 
-study = optuna.create_study()
-study.optimize(objective, n_trials=50)
+def run_hpo():
+    study = optuna.create_study()
+    study.optimize(objective, n_trials=50)

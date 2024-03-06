@@ -5,14 +5,16 @@ import os
 import json
 
 TASK_TO_LIST = {
-    # "arc": "arc_challenge",
-    # "hellaswag": "hellaswag",
-    # "truthfulqa": "truthfulqa_mc",
-    # "mmlu": "hendrycksTest-abstract_algebra,hendrycksTest-anatomy,hendrycksTest-astronomy,hendrycksTest-business_ethics,hendrycksTest-clinical_knowledge,hendrycksTest-college_biology,hendrycksTest-college_chemistry,hendrycksTest-college_computer_science,hendrycksTest-college_mathematics,hendrycksTest-college_medicine,hendrycksTest-college_physics,hendrycksTest-computer_security,hendrycksTest-conceptual_physics,hendrycksTest-econometrics,hendrycksTest-electrical_engineering,hendrycksTest-elementary_mathematics,hendrycksTest-formal_logic,hendrycksTest-global_facts,hendrycksTest-high_school_biology,hendrycksTest-high_school_chemistry,hendrycksTest-high_school_computer_science,hendrycksTest-high_school_european_history,hendrycksTest-high_school_geography,hendrycksTest-high_school_government_and_politics,hendrycksTest-high_school_macroeconomics,hendrycksTest-high_school_mathematics,hendrycksTest-high_school_microeconomics,hendrycksTest-high_school_physics,hendrycksTest-high_school_psychology,hendrycksTest-high_school_statistics,hendrycksTest-high_school_us_history,hendrycksTest-high_school_world_history,hendrycksTest-human_aging,hendrycksTest-human_sexuality,hendrycksTest-international_law,hendrycksTest-jurisprudence,hendrycksTest-logical_fallacies,hendrycksTest-machine_learning,hendrycksTest-management,hendrycksTest-marketing,hendrycksTest-medical_genetics,hendrycksTest-miscellaneous,hendrycksTest-moral_disputes,hendrycksTest-moral_scenarios,hendrycksTest-nutrition,hendrycksTest-philosophy,hendrycksTest-prehistory,hendrycksTest-professional_accounting,hendrycksTest-professional_law,hendrycksTest-professional_medicine,hendrycksTest-professional_psychology,hendrycksTest-public_relations,hendrycksTest-security_studies,hendrycksTest-sociology,hendrycksTest-us_foreign_policy,hendrycksTest-virology,hendrycksTest-world_religions",
-    # "winogrande": "winogrande",
-    "gsm8k": "gsm8k",
-    # "drop": "drop",
+    "arc": "arc_challenge",
 }
+# OTHER_TASKS = {
+#     "hellaswag": "hellaswag",
+#     "truthfulqa": "truthfulqa_mc",
+#     "mmlu": "hendrycksTest-abstract_algebra,hendrycksTest-anatomy,hendrycksTest-astronomy,hendrycksTest-business_ethics,hendrycksTest-clinical_knowledge,hendrycksTest-college_biology,hendrycksTest-college_chemistry,hendrycksTest-college_computer_science,hendrycksTest-college_mathematics,hendrycksTest-college_medicine,hendrycksTest-college_physics,hendrycksTest-computer_security,hendrycksTest-conceptual_physics,hendrycksTest-econometrics,hendrycksTest-electrical_engineering,hendrycksTest-elementary_mathematics,hendrycksTest-formal_logic,hendrycksTest-global_facts,hendrycksTest-high_school_biology,hendrycksTest-high_school_chemistry,hendrycksTest-high_school_computer_science,hendrycksTest-high_school_european_history,hendrycksTest-high_school_geography,hendrycksTest-high_school_government_and_politics,hendrycksTest-high_school_macroeconomics,hendrycksTest-high_school_mathematics,hendrycksTest-high_school_microeconomics,hendrycksTest-high_school_physics,hendrycksTest-high_school_psychology,hendrycksTest-high_school_statistics,hendrycksTest-high_school_us_history,hendrycksTest-high_school_world_history,hendrycksTest-human_aging,hendrycksTest-human_sexuality,hendrycksTest-international_law,hendrycksTest-jurisprudence,hendrycksTest-logical_fallacies,hendrycksTest-machine_learning,hendrycksTest-management,hendrycksTest-marketing,hendrycksTest-medical_genetics,hendrycksTest-miscellaneous,hendrycksTest-moral_disputes,hendrycksTest-moral_scenarios,hendrycksTest-nutrition,hendrycksTest-philosophy,hendrycksTest-prehistory,hendrycksTest-professional_accounting,hendrycksTest-professional_law,hendrycksTest-professional_medicine,hendrycksTest-professional_psychology,hendrycksTest-public_relations,hendrycksTest-security_studies,hendrycksTest-sociology,hendrycksTest-us_foreign_policy,hendrycksTest-virology,hendrycksTest-world_religions",
+#     "winogrande": "winogrande",
+#     "gsm8k": "gsm8k",
+#     "drop": "drop",
+# }
 TASK_TO_NUM_SHOTS = {
     "arc": 25,
     "hellaswag": 10,
@@ -45,9 +47,10 @@ def run_eval_suite(args):
         eval_log = json.load(open(f"{args.output_path}/eval_log.json", "r"))
 
     for task in TASK_TO_LIST.keys():
-        if task in eval_log:
-            print(f"Skipping {task} because it has already been run")
-            continue
+        if not args.force_rerun:
+            if task in eval_log:
+                print(f"Skipping {task} because it has already been run")
+                continue
         print(f"Running {task}...\n")
         num_shots = TASK_TO_NUM_SHOTS[task]
         task_list = TASK_TO_LIST[task]
@@ -59,6 +62,8 @@ def run_eval_suite(args):
 
         if args.device is not None:
             command += f" --device={args.device}"
+        if args.bench_on_val:
+            command += " --bench_on_val"
         print(command + '\n')
         ret = os.system(command)
 
@@ -67,7 +72,7 @@ def run_eval_suite(args):
         else:
             eval_log[task] = True
             json.dump(eval_log, open(f"{args.output_path}/eval_log.json", "w"), indent=4)
-    return
+    return eval_log
 
 # Create a script that takes a few arguments and runs the evaluation suite
 if __name__ == '__main__':
@@ -79,6 +84,8 @@ if __name__ == '__main__':
     parser.add_argument('--eval-harness-path', type=str, default='~/lm-evaluation-harness', help='Path to the eval_harness directory')
     parser.add_argument('--device', type=str, default=None, help='Device to run on eg cuda:0,1')
     parser.add_argument('--batch-size', type=int, default=2, help='Batch size to use for evaluation')
+    parser.add_argument('--bench-on-val', action='store_true', help='If set, the evaluation will be performed on the validation set instead of the test set')
+    parser.add_argument('--force-rerun', action='store_true', help='If set, the evaluation will be performed even if it has already been run')
 
     print("\n\n=============================================================")
     print("INFO: Make sure you have the lm-evaluation-harness repo cloned in your home directory and installed with \"pip install -e .\" ")
