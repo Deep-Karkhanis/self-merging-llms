@@ -1,32 +1,38 @@
 # Self Merging LLMs
 Efficient Self-Merging for Large Language Models
 
-## Running LLM-Evals 
-- Clone lm-evaluation-harness and checkout to commit consistent with the [Open LLM Leaderboard](https://huggingface.co/spaces/HuggingFaceH4/open_llm_leaderboard)
+## Launching docker to run the repo
+- Clone our repository 
   ```
-  git clone https://github.com/EleutherAI/lm-evaluation-harness.git 
-  cd lm-evaluation-harness
-  git checkout b281b0921b636bc36ad05c0b0b0763bd6dd43463
-  ```
-- Clone our repository and run the docker image. If needed, provide a comma separated list of GPU ids to run docker across multiple GPUs
-  ```
-  cd ../
   git clone https://github.com/Deep-Karkhanis/self-merging-llms.git
-  ./self-merging-llms/scripts/lambdadocker-default.sh 0
+  cd self-merging-llms
   ```
+- Run the docker image. If needed, provide a comma separated list of GPU ids to run docker across multiple GPUs
+  ```
+  ./scripts/lambdadocker-default.sh 0
+  ```
+- The lm-evaluation-harness directory is a copy of [lm-evaluation-harness](https://github.com/EleutherAI/lm-evaluation-harness.git) repo checked out to the commit `b281b0921b636bc36ad05c0b0b0763bd6dd43463`, consistent with the [Open LLM Leaderboard](https://huggingface.co/spaces/HuggingFaceH4/open_llm_leaderboard)
 - Install lm-evaluation-harness in docker
   ```
-  cd /repos/lm-evaluation-harness
+  cd /repos/self-merging-llms/lm-evaluation-harness
   pip install -e .
+  cd ../
   ```
+  
+## Running HPO on ARC Val set
+  ```
+  python main.py
+  ```
+
+## Running LLM-Evals 
 - Use script [llm_leaderboard_eval.py](https://github.com/Deep-Karkhanis/self-merging-llms/blob/main/llm_leaderboard_eval.py) to run evals. Un-comment tasks you want evaluated
   ```
   TASK_TO_LIST = {
-    # "arc": "arc_challenge",
+    "arc": "arc_challenge",
     # "hellaswag": "hellaswag",
     # "truthfulqa": "truthfulqa-mc",
     # "winogrande": "winogrande",
-    "gsm8k": "gsm8k",
+    # "gsm8k": "gsm8k",
     # "drop": "drop",
   }
   ```
