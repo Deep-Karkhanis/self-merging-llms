@@ -44,7 +44,6 @@ def objective(trial):
         # TODO: run mergekit command to create model here, given the config config_file_name, e.g. equivalent to
         #!mergekit-yaml $config_file_name merge --copy-tokenizer --allow-crimes --out-shard-size 1B --lazy-unpickle
 
-        # TODO: evaluate model here, and replace 0.5 with the true eval loss
         # call run_eval_suite(args) with the following args:
         # python ./llm_leaderboard_eval.py  --model-path DeepKarkhanis/NeuralPipe-7B-slerp 
         #                                   --output-path ./llm_eval_results/DeepKarkhanis-NeuralPipe-7B-slerp 
