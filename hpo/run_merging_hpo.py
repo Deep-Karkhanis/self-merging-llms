@@ -73,6 +73,6 @@ def objective(trial):
     return eval_loss
 
 
-def run_hpo():
+def run_merging_hpo():
     study = optuna.create_study()
     study.optimize(objective, n_trials=50)
