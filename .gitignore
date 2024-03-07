@@ -1,4 +1,5 @@
 llm_eval_results/DeepKarkhanis-NeuralPipe-7B-slerp/*
+configs/*.yaml
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

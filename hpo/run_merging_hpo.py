@@ -1,7 +1,15 @@
 import optuna
+import json
+import logging
+import yaml
+import os
+
 from llm_leaderboard_eval import run_eval_suite
 from argparse import Namespace
-import json
+from mergekit.config import MergeConfiguration
+from mergekit.merge import run_merge
+from mergekit.options import MergeOptions, add_merge_options
+
 
 def create_mergekit_yaml(config_file_name, 
                          layer_length, 
@@ -26,14 +34,41 @@ def create_mergekit_yaml(config_file_name,
         f.write(yaml_config)
 
 
+def run_mergekit_yaml(
+    merge_options: MergeOptions,
+    config_file: str,
+    out_path: str,
+    verbose: bool):
+
+    logging.basicConfig(level=logging.INFO if verbose else logging.WARNING)
+
+    with open(config_file, "r", encoding="utf-8") as file:
+        config_source = file.read()
+
+    merge_config: MergeConfiguration = MergeConfiguration.model_validate(
+        yaml.safe_load(config_source)
+    )
+
+    run_merge(
+        merge_config,
+        out_path,
+        options=merge_options,
+        config_source=config_source)
+
+
 def objective(trial):
 
     # sample hyperparameters
     layer_length = trial.suggest_int('layer_length', 1, 30)
     layer_overlap = trial.suggest_float('layer_overlap', 0.0, 0.5)
 
-    # create mergekit config
+    # create config and output folders
     config_file_name = "configs/MegaDolphin-Optuna-" + str(trial.number) + ".yaml"
+    output_folder_name = "models/MegaDolphin-Optuna-" + str(trial.number)
+
+    if not os.path.exists(output_folder_name):
+        os.makedirs(output_folder_name)
+
     create_mergekit_yaml(config_file_name, 
                          layer_length, 
                          layer_overlap,
@@ -42,7 +77,13 @@ def objective(trial):
 
     try:
         # TODO: run mergekit command to create model here, given the config config_file_name, e.g. equivalent to
-        #!mergekit-yaml $config_file_name merge --copy-tokenizer --allow-crimes --out-shard-size 1B --lazy-unpickle
+
+        merge_options = MergeOptions()
+        run_mergekit_yaml(
+            config_file=config_file_name,
+            out_path=output_folder_name,
+            merge_options=merge_options,
+            verbose=True)
 
         # call run_eval_suite(args) with the following args:
         # python ./llm_leaderboard_eval.py  --model-path DeepKarkhanis/NeuralPipe-7B-slerp 
@@ -74,5 +115,8 @@ def objective(trial):
 
 
 def run_merging_hpo():
+    if not os.path.exists("config"):
+        os.makedirs("config")
+
     study = optuna.create_study()
     study.optimize(objective, n_trials=50)
