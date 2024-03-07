@@ -1,5 +1,7 @@
 llm_eval_results/DeepKarkhanis-NeuralPipe-7B-slerp/*
 configs/*.yaml
+*.DS_Store
+models/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

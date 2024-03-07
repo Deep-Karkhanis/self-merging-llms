@@ -115,8 +115,8 @@ def objective(trial):
 
 
 def run_merging_hpo():
-    if not os.path.exists("config"):
-        os.makedirs("config")
+    if not os.path.exists("configs"):
+        os.makedirs("configs")
 
     study = optuna.create_study()
     study.optimize(objective, n_trials=50)
