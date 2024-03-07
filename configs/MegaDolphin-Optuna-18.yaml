@@ -1,0 +1,12 @@
+dtype: float16
+merge_method: passthrough
+slices:
+- sources:
+  - layer_range: [0, 26]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [22, 48]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [44, 80]
+    model: cognitivecomputations/dolphin-2.2-70b

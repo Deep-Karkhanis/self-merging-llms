@@ -1,0 +1,36 @@
+dtype: float16
+merge_method: passthrough
+slices:
+- sources:
+  - layer_range: [0, 13]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [7, 20]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [14, 27]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [21, 34]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [28, 41]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [35, 48]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [42, 55]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [49, 62]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [56, 69]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [63, 76]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [70, 80]
+    model: cognitivecomputations/dolphin-2.2-70b

@@ -1,0 +1,240 @@
+dtype: float16
+merge_method: passthrough
+slices:
+- sources:
+  - layer_range: [0, 2]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [1, 3]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [2, 4]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [3, 5]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [4, 6]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [5, 7]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [6, 8]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [7, 9]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [8, 10]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [9, 11]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [10, 12]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [11, 13]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [12, 14]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [13, 15]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [14, 16]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [15, 17]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [16, 18]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [17, 19]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [18, 20]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [19, 21]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [20, 22]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [21, 23]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [22, 24]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [23, 25]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [24, 26]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [25, 27]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [26, 28]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [27, 29]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [28, 30]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [29, 31]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [30, 32]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [31, 33]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [32, 34]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [33, 35]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [34, 36]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [35, 37]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [36, 38]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [37, 39]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [38, 40]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [39, 41]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [40, 42]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [41, 43]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [42, 44]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [43, 45]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [44, 46]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [45, 47]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [46, 48]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [47, 49]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [48, 50]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [49, 51]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [50, 52]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [51, 53]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [52, 54]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [53, 55]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [54, 56]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [55, 57]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [56, 58]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [57, 59]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [58, 60]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [59, 61]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [60, 62]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [61, 63]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [62, 64]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [63, 65]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [64, 66]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [65, 67]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [66, 68]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [67, 69]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [68, 70]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [69, 71]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [70, 72]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [71, 73]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [72, 74]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [73, 75]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [74, 76]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [75, 77]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [76, 78]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [77, 79]
+    model: cognitivecomputations/dolphin-2.2-70b
+- sources:
+  - layer_range: [78, 80]
+    model: cognitivecomputations/dolphin-2.2-70b
