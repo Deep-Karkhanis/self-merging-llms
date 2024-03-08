@@ -76,9 +76,8 @@ def objective(trial):
                          max_layers=80)
 
     try:
-        # TODO: run mergekit command to create model here, given the config config_file_name, e.g. equivalent to
-
-        merge_options = MergeOptions()
+        # create the model and run eval
+        merge_options = MergeOptions(clone_tensors=True)
         run_mergekit_yaml(
             config_file=config_file_name,
             out_path=output_folder_name,
