@@ -2,9 +2,13 @@
 Efficient Self-Merging for Large Language Models
 
 ## Launching docker to run the repo
+- If you haven't cloned llm-training, do this first:
+  ```
+  git clone git@github.com:abacusai/llm-training.git
+  ```
 - Clone our repository 
   ```
-  git clone https://github.com/Deep-Karkhanis/self-merging-llms.git
+  git clone git@github.com:Deep-Karkhanis/self-merging-llms.git
   cd self-merging-llms
   ```
 - If you haven't set up gcloud yet, run `gcloud auth login`
