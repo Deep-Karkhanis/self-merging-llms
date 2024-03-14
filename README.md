@@ -7,18 +7,26 @@ Efficient Self-Merging for Large Language Models
   git clone https://github.com/Deep-Karkhanis/self-merging-llms.git
   cd self-merging-llms
   ```
+- If you haven't set up gcloud yet, run `gcloud auth login`
 - Run the docker image. If needed, provide a comma separated list of GPU ids to run docker across multiple GPUs
   ```
   ./scripts/lambdadocker-default.sh 0
   ```
-- The lm-evaluation-harness directory is a copy of [lm-evaluation-harness](https://github.com/EleutherAI/lm-evaluation-harness.git) repo checked out to the commit `b281b0921b636bc36ad05c0b0b0763bd6dd43463`, consistent with the [Open LLM Leaderboard](https://huggingface.co/spaces/HuggingFaceH4/open_llm_leaderboard)
+- The lm-evaluation-harness directory is a copy of the [lm-evaluation-harness](https://github.com/EleutherAI/lm-evaluation-harness.git) repo checked out to the commit `b281b0921b636bc36ad05c0b0b0763bd6dd43463`, consistent with the [Open LLM Leaderboard](https://huggingface.co/spaces/HuggingFaceH4/open_llm_leaderboard)
 - Install lm-evaluation-harness in docker
   ```
   cd /repos/self-merging-llms/lm-evaluation-harness
   pip install -e .
   cd ../
   ```
-  
+- Mergekit is a copy of the [mergekit](https://github.com/arcee-ai/mergekit) repo checked out to `41fe76b1ce1e82fbb1f8c50545a0ff0a39db1df7` (the latest commit as of March 14, 2024).
+- Install mergekit in docker
+  ```
+  cd /repos/self-merging-llms/mergekit
+  pip install -e .
+  cd ../
+  ```
+
 ## Running HPO on ARC Val set
   ```
   python main.py
